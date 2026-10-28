@@ -2,9 +2,10 @@
 
 bool SensorRegistry::add(std::unique_ptr<ISensor> sensor)
 {
-	if (sensors_.find(sensor->name()) != sensors_.end())
+	auto name = sensor->name();
+	if (sensors_.find(sensor->name()) == sensors_.end())
 	{
-		sensors_.emplace(sensor->name(), sensor);
+		sensors_.emplace(std::move(name), std::move(sensor));
 		return true;
 	}
 	else
