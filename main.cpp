@@ -2,6 +2,9 @@
 #include "SensorRegistry.h"
 #include "Sensors.h"
 #include <iostream>
+#include <algorithm>
+#include <numeric>
+
 int main(void)
 {
 	auto kitchen_temp_ptr = std::make_unique<TemperatureSensor>("kitchen_temp", 22);
@@ -37,4 +40,17 @@ int main(void)
 		std::cout << name << '\n';
 	}
 	std::cout << "size = " << registrator.size() << '\n';
+
+	std::map < std::string, std::vector<double>> map_types;
+	auto reading = registrator.read_all();
+	for (const auto& r : reading)
+	{
+		map_types[r.type].push_back(r.value);
+	}
+	for (const auto& [type, value] : map_types)
+	{
+		double sum = std::accumulate(value.begin(), value.end(), 0.0);
+		double avg = sum / value.size();
+		std::cout << "Average " << type << ": " << avg << '\n';
+	}
 }

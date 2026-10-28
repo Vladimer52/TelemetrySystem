@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include "ISensor.h"
+#include "Reading.h"
 class SensorRegistry
 {
 private:
@@ -15,5 +16,6 @@ public:
 	const ISensor* find(const std::string& name) const;
 	std::vector<std::string> list_name() const;
 	size_t size() const;
+	std::vector<Reading> read_all(void);
 };
 

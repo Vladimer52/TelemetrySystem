@@ -1,5 +1,4 @@
 #include "SensorRegistry.h"
-
 bool SensorRegistry::add(std::unique_ptr<ISensor> sensor)
 {
 	auto name = sensor->name();
@@ -59,4 +58,19 @@ std::vector<std::string> SensorRegistry::list_name() const
 size_t SensorRegistry::size() const
 {
 	return sensors_.size();
+}
+
+std::vector<Reading> SensorRegistry::read_all()
+{
+	std::vector<Reading> read_out;
+	read_out.reserve(sensors_.size());
+	for (const auto& sensor : sensors_)
+	{
+		read_out.push_back({
+			.name = sensor.second->name(),
+			.type = sensor.second->type(),
+			.value = sensor.second->read()
+		});
+	}
+	return read_out;
 }
